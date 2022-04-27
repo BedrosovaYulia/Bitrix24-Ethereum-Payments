@@ -1,0 +1,96 @@
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+<div class="b24-form">
+    <div class="b24-form-style-classic">
+        <div class="b24-form-wrapper">
+            <div class="b24-form-header b24-form-padding-side">
+                <div class="b24-form-header-title">Pay 0.01 ether</div>
+                <div class="b24-form-header-description">
+                    <p>Wallet address: <span id="wallet-address"></span></p>
+                </div>
+            </div>
+            <div class="b24-form-content b24-form-padding-side">
+                    <div>
+                        <div class="b24-form-field b24-form-field-name b24-form-control-string">
+                            <div>
+                                <div>
+                                    <div class="b24-form-control-container b24-form-control-icon-after">
+                                        <input name="name" autocomplete="given-name" type="string"
+                                            class="b24-form-control" id="MESSAGE">
+                                        <div class="b24-form-control-label">
+                                            Message:
+                                        </div>
+                                    </div>
+                                </div>
+                                <!---->
+                                <!---->
+                            </div>
+                            <!---->
+                        </div>
+                        <div class="b24-form-btn-container">
+                            <!---->
+                            <!---->
+                            <div class="b24-form-btn-block">
+                                <button id="paybutton" class="b24-form-btn">
+                                    Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+// 1. Connect metamask to our site. Get the user's address
+var account = null;
+var contract = null;
+const ABI= [
+       {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            }
+        ],
+        "name": "SendPayment",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }  
+    ];
+const ADDRESS = "0xfb631D521b4f5ceeA0bbBa6fE6Ff1b2e7Ce0D6c5" ;
+(async () => {
+if (window.ethereum) {
+
+    await window.ethereum.send('eth_requestAccounts');
+    window.web3 = new Web3(window.ethereum) ;
+
+    var accounts = await web3.eth.getAccounts();
+    account = accounts[0];
+    document.getElementById('wallet-address').textContent = account;
+        
+    contract = new web3.eth.Contract(ABI, ADDRESS);
+        
+        document.getElementById('paybutton').onclick=()=>{
+            var message = document.getElementById("MESSAGE").value;
+
+            contract.methods.SendPayment(message).send({ from: account, value: "10000000000000000" });
+        }
+
+}  
+else{
+    document.getElementById('wallet-address').textContent = "Please connect your MetaMask to Kovan network!";
+}
+})();
+
+    async function refreshakk() {
+        var accounts = await web3.eth.getAccounts();
+        account = accounts[0];
+        document.getElementById('wallet-address').textContent = account;
+        
+    }
+    setInterval(refreshakk, 1000);
+</script>

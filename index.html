@@ -38,6 +38,12 @@
                         </div>
                     </div>
             </div>
+            <div class="b24-form-header b24-form-padding-side">
+                <div class="b24-form-header-title">Your transactions:</div>
+                <div class="b24-form-header-description">
+                    <p><span id="alltransactions"></span></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -116,22 +122,25 @@ else{
         account = accounts[0];
         document.getElementById('wallet-address').textContent = account;
         
-        //console.log(web3.utils.padLeft(account, 64).toString().toLowerCase());
-        
         var results = await contract.getPastEvents(
             'PaymentReceived', 
             {
                 fromBlock: 0,
                 toBlock: 'latest',
-                //topics: web3.utils.padLeft(account, 64).toString().toLowerCase()
-                topics: [null, "0x0000000000000000000000001047904fc0676d81edb017b5b9aac7184876199d", null]
+                topics: [null, web3.utils.padLeft(account, 64).toString().toLowerCase(), null]
                 
             }
             );
-        console.log(results);
+        var alltransactiontext="";
+        for (i = 0; i < results.length; i++) {
+            console.log(results[i].returnValues);
+            alltransactiontext= alltransactiontext+ results[i].returnValues[0]+"<br/>";
+            
+        }
+        document.getElementById('alltransactions').innerHTML = alltransactiontext;
         
     }
-    setInterval(refreshakk, 3000);
+    setInterval(refreshakk, 1000);
 
     
 </script>

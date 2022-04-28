@@ -53,7 +53,7 @@
             </div>
             <div class="b24-form-header b24-form-padding-side">
                 <div class="b24-form-header-title">All your payments:</div>
-                <div class="b24-form-header-description">
+                <div class="b24-form-header-description" style="text-align:left">
                     <p><span id="alltransactions"></span></p>
                 </div>
             </div>
@@ -63,6 +63,10 @@
 
 <script type="text/javascript">
 // 1. Connect metamask to our site. Get the user's address
+//TODO
+//Checking network
+//Dates of transactions
+//Amount
 var account = null;
 var contract = null;
 const ABI= [
@@ -147,7 +151,7 @@ else{
         var alltransactiontext="";
         for (i = 0; i < results.length; i++) {
             console.log(results[i].returnValues);
-            alltransactiontext= alltransactiontext+ results[i].returnValues[0]+"<br/>";
+            alltransactiontext= alltransactiontext+ "<left>"+results[i].returnValues[0]+"</left><br/>";
             
         }
         document.getElementById('alltransactions').innerHTML = alltransactiontext;

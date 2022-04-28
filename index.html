@@ -59,9 +59,34 @@ const ABI= [
         "outputs": [],
         "stateMutability": "payable",
         "type": "function"
-    }  
+        },
+        {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "PaymentReceived",
+        "type": "event"
+        },  
     ];
-const ADDRESS = "0xfb631D521b4f5ceeA0bbBa6fE6Ff1b2e7Ce0D6c5" ;
+const ADDRESS = "0x01f0b7E13d6604F53E3525AA858BB80e7c23f664" ;
 (async () => {
 if (window.ethereum) {
 
@@ -90,7 +115,19 @@ else{
         var accounts = await web3.eth.getAccounts();
         account = accounts[0];
         document.getElementById('wallet-address').textContent = account;
+
+        var results = await contract.getPastEvents(
+            'PaymentReceived', 
+            {
+                fromBlock: 0,
+                toBlock: 'latest',
+                filter: { address: account }
+            }
+            );
+        console.log(results);
         
     }
-    setInterval(refreshakk, 1000);
+    setInterval(refreshakk, 10000);
+
+    
 </script>

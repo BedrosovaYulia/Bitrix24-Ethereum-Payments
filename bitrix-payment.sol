@@ -197,29 +197,30 @@ abstract contract Pausable is Context {
 
 // File: contracts/bitrix_payment.sol
 
-
 pragma solidity ^0.8.11;
-
-
 
 contract GetPaid is Pausable, Ownable {
     constructor(){}
 
-    event PaymentReceived();
+    event PaymentReceived(string message, address indexed from, uint);
 
-    function pause() public onlyOwner {
+    receive() external payable {
+        emit PaymentReceived("", msg.sender, msg.value);
+    }
+
+    function pause() external onlyOwner {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() external onlyOwner {
         _unpause();
     }
 
-    function SendPayment() public payable whenNotPaused {
-        
-    }
+    function SendPayment(string calldata message) external payable whenNotPaused {
+        emit PaymentReceived(message, msg.sender, msg.value);
+    } 
 
-    function withdraw() public onlyOwner {
+    function withdraw() external onlyOwner {
         (bool os, ) = payable(owner()).call{value: address(this).balance}("");
         require(os);
     }

@@ -70,7 +70,7 @@ const ABI= [
                 "type": "string"
             },
             {
-                "indexed": false,
+                "indexed": true,
                 "internalType": "address",
                 "name": "",
                 "type": "address"
@@ -86,7 +86,7 @@ const ABI= [
         "type": "event"
         },  
     ];
-const ADDRESS = "0x01f0b7E13d6604F53E3525AA858BB80e7c23f664" ;
+const ADDRESS = "0x3DcFE8882E4fC66d02EA49980Ec552540e559Ba7" ;
 (async () => {
 if (window.ethereum) {
 
@@ -115,19 +115,23 @@ else{
         var accounts = await web3.eth.getAccounts();
         account = accounts[0];
         document.getElementById('wallet-address').textContent = account;
-
+        
+        //console.log(web3.utils.padLeft(account, 64).toString().toLowerCase());
+        
         var results = await contract.getPastEvents(
             'PaymentReceived', 
             {
                 fromBlock: 0,
                 toBlock: 'latest',
-                filter: { address: account }
+                //topics: web3.utils.padLeft(account, 64).toString().toLowerCase()
+                topics: [null, "0x0000000000000000000000001047904fc0676d81edb017b5b9aac7184876199d", null]
+                
             }
             );
         console.log(results);
         
     }
-    setInterval(refreshakk, 10000);
+    setInterval(refreshakk, 3000);
 
     
 </script>
